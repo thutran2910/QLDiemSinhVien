@@ -134,5 +134,4 @@ public class SinhVienController {
         sinhVienService.deleteById(id);
         return "redirect:/dssv";
     }
-
 }
