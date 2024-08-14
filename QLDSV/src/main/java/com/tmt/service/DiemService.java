@@ -26,6 +26,8 @@ public interface DiemService {
     List<LopHoc> getAllLopHocs();
 
     List<LoaiDiem> getAllLoaiDiems();
+    
+    List<Diem> getDiemBySinhVienId(int sinhVienId);
 
     List<Diem> getDiemBySinhVienIdAndMonHocIdAndLopHocId(int sinhVienId, int monHocId, int lopHocId);
 

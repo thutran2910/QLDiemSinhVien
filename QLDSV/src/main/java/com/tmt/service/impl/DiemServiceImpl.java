@@ -123,4 +123,9 @@ public class DiemServiceImpl implements DiemService {
 //        // Điểm trung bình = 50% điểm giữa kỳ + 50% điểm cuối kỳ
 //        return (averageMidterm * 0.5f) + (averageFinal * 0.5f);
 //    }
+
+    @Override
+    public List<Diem> getDiemBySinhVienId(int sinhVienId) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

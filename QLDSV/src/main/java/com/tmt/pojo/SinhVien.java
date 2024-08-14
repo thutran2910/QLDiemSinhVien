@@ -15,7 +15,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "sinhvien")
-public class SinhVien extends NguoiDung implements Serializable {
+public class SinhVien extends User implements Serializable {
 
     @Column(nullable = false)
     private String name;

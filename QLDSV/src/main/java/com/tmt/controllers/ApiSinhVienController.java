@@ -33,7 +33,7 @@ public class ApiSinhVienController {
 
     @PostMapping("/register")
     public ResponseEntity<String> registerSinhVien(@Valid @RequestBody SinhVien sinhVien) {
-        // Validate email domain
+        // đúng tên miền email
         if (!sinhVien.getEmail().endsWith("@ou.edu.vn")) {
             return ResponseEntity.badRequest().body("Email phải có miền là @ou.edu.vn");
         }

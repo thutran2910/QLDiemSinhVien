@@ -38,6 +38,13 @@ public class ApiDiemController {
         this.lopHocService = lopHocService;
     }
 
+    @GetMapping("/by-sinhvien")
+    public ResponseEntity<List<Diem>> getDiemsBySinhVienId(@RequestParam int sinhVienId) {
+        List<Diem> diems = diemService.getDiemBySinhVienId(sinhVienId);
+        return ResponseEntity.ok(diems);
+    }
+
+    
     @GetMapping
     public ResponseEntity<List<Diem>> getAllDiems() {
         List<Diem> diems = diemService.getAllDiems();
@@ -90,8 +97,6 @@ public class ApiDiemController {
         List<LoaiDiem> loaiDiems = diemService.getAllLoaiDiems();
         return ResponseEntity.ok(loaiDiems);
     }
-
-    
 
     @PostMapping
     public ResponseEntity<Diem> createDiem(@RequestBody Diem diem) {

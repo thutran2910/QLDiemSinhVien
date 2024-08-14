@@ -21,7 +21,7 @@ public class GiangVien {
 
     @ManyToOne
     @JoinColumn(name = "idUser")
-    private NguoiDung nguoiDung;
+    private User nguoiDung;
 
     @OneToMany(mappedBy = "giangVien")
     private Set<GiangVienLopHoc> giangVienLopHocs = new HashSet<>();
@@ -44,11 +44,11 @@ public class GiangVien {
         this.name = name;
     }
 
-    public NguoiDung getNguoiDung() {
+    public User getNguoiDung() {
         return nguoiDung;
     }
 
-    public void setNguoiDung(NguoiDung nguoiDung) {
+    public void setNguoiDung(User nguoiDung) {
         this.nguoiDung = nguoiDung;
     }
 
