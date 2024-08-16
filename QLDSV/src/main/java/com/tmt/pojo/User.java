@@ -196,7 +196,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "com.dht.pojo.User[ id=" + id + " ]";
+        return "com.tmt.pojo.User[ id=" + id + " ]";
     }
     
 }

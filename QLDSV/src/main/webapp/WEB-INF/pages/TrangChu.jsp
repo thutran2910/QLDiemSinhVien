@@ -7,14 +7,13 @@
 <!DOCTYPE html>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page session="false" %>
 <html>
 <head>
     <title>QUẢN LÝ ĐIỂM SINH VIÊN</title>
-    <!-- Thêm liên kết đến Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <!-- Navbar Bootstrap -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="#">Quản Lý Điểm Sinh Viên</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,20 +33,21 @@
                 <li class="nav-item">
                     <a class="nav-link" href="<c:url value='/diem'/>">Điểm</a>
                 </li>
-                  <li class="nav-item">
+                <li class="nav-item">
                     <a class="nav-link" href="<c:url value='/bctk'/>">Báo cáo thống kê</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<c:url value='/logout'/>">Đăng xuất</a>
                 </li>
             </ul>
         </div>
     </nav>
-    <!-- Nội dung chính -->
     <div class="container">
         <h1 class="text-center my-4">QUẢN LÝ ĐIỂM SINH VIÊN</h1>
     </div>
-
-    <!-- Thêm liên kết đến Bootstrap JS và các phụ thuộc -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
+
