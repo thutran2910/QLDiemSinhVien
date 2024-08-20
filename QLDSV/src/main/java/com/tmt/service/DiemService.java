@@ -5,13 +5,17 @@
 package com.tmt.service;
 
 import com.tmt.pojo.Diem;
+import com.tmt.pojo.DiemTrungBinh;
 import com.tmt.pojo.HocKy;
 import com.tmt.pojo.LoaiDiem;
 import com.tmt.pojo.LopHoc;
 import com.tmt.pojo.MonHoc;
 import com.tmt.pojo.SinhVien;
+import java.io.IOException;
 
 import java.util.List;
+import java.util.Map;
+import javax.servlet.http.HttpServletResponse;
 
 public interface DiemService {
 
@@ -22,12 +26,10 @@ public interface DiemService {
     List<MonHoc> getAllMonHocs();
 
     List<HocKy> getAllHocKys();
-    
+
     List<LopHoc> getAllLopHocs();
 
     List<LoaiDiem> getAllLoaiDiems();
-    
-    List<Diem> getDiemBySinhVienId(int sinhVienId);
 
     List<Diem> getDiemBySinhVienIdAndMonHocIdAndLopHocId(int sinhVienId, int monHocId, int lopHocId);
 
@@ -38,5 +40,13 @@ public interface DiemService {
     void updateDiem(Diem diem);
 
     void deleteDiem(int id);
-//    float calculateAverageScore(int sinhVienId, int monHocId);
+
+    void exportDiemToPdf(HttpServletResponse response, List<Diem> diemList) throws IOException;
+
+    Double getAverageScoreForStudent(int sinhVienId, int monHocId, int lopHocId);
+
+    List<Object[]> getAllAverageScores(int monHocId, int lopHocId);
+
+    List<Object[]> getHighestAverageScoresByClass(int monHocId);
+
 }

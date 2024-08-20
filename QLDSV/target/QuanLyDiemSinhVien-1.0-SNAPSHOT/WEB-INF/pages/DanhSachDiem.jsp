@@ -42,7 +42,9 @@
                 width: 100px;
                 margin: 0 auto;
             }
+
         </style>
+
     </head>
     <body>
         <!-- Navbar Bootstrap -->
@@ -116,12 +118,9 @@
                             <c:when test="${diem.loaiDiem.name == 'Diem giua ky'}">
                                 <tr>
                                     <td>${diem.sinhVien.name}</td>
+                                    <td>${diem.score}</td>
                                     <td>
-                                        <input type="text" value="${diem.score}" class="form-control-plaintext" readonly />
-                                    </td>
-                                    <td>
-
-                                        <form action="${pageContext.request.contextPath}/diem/delete" method="post" class="d-inline">
+                                        <form action="${pageContext.request.contextPath}/diem/delete" method="post">
                                             <input type="hidden" name="id" value="${diem.id}" />
                                             <button type="submit" class="btn btn-danger">Xóa</button>
                                         </form>
@@ -149,12 +148,9 @@
                             <c:when test="${diem.loaiDiem.name == 'Diem cuoi ky'}">
                                 <tr>
                                     <td>${diem.sinhVien.name}</td>
+                                    <td>${diem.score}</td>
                                     <td>
-                                        <input type="text" value="${diem.score}" class="form-control-plaintext" readonly />
-                                    </td>
-                                    <td>
-
-                                        <form action="${pageContext.request.contextPath}/diem/delete" method="post" class="d-inline">
+                                        <form action="${pageContext.request.contextPath}/diem/delete" method="post">
                                             <input type="hidden" name="id" value="${diem.id}" />
                                             <button type="submit" class="btn btn-danger">Xóa</button>
                                         </form>
@@ -166,76 +162,57 @@
                 </tbody>
             </table>
 
-            <!-- Table for Average Scores -->
-            <h2 class="mb-4">ĐIỂM TRUNG BÌNH</h2>
-            <table class="table table-striped table-bordered">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>Sinh viên</th>
-                        <th>Điểm trung bình</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <c:forEach items="${averageScores}" var="averageScore">
-                        <tr>
-                            <td>${averageScore.sinhVienName}</td>
-                            <td>
-                                <input type="text" value="${averageScore.averageScore}" class="form-control-plaintext" readonly />
-                            </td>
-                        </tr>
-                    </c:forEach>
-                </tbody>
-            </table>
-
+            <div class="mb-4">
+                <a href="<c:url value='/DanhSachDTB'/>">Xem điểm trung bình</a>
+            </div>
             <!-- Navigation buttons -->
-            <!-- Navigation buttons -->
-            <!-- Navigation buttons -->
-<div class="btn-group" role="group">
-    <a href="<c:url value='/'/>" class="btn btn-success">Trở về trang chủ</a>
-    <a href="<c:url value='/diem/form'/>" class="btn btn-warning">Nhập điểm</a>
-    <!-- Export Button -->
-    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exportModal">
-        Xuất bảng điểm
-    </button>
-</div>
-
-<div class="modal fade" id="exportModal" tabindex="-1" role="dialog" aria-labelledby="exportModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exportModalLabel">Chọn định dạng xuất</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+            <div class="btn-group" role="group">
+                <a href="<c:url value='/'/>" class="btn btn-success">Trở về trang chủ</a>
+                <a href="<c:url value='/diem/form'/>" class="btn btn-warning">Nhập điểm</a>
+                <a href="<c:url value='/dtb'/>" class="btn btn-warning">DTB</a>
+                <!-- Export Button -->
+                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exportModal">
+                    Xuất bảng điểm
                 </button>
             </div>
-            <div class="modal-body">
-                <a href="#" class="btn btn-info" onclick="xuatCSV()">Xuất CSV</a>
-                <a href="#" class="btn btn-danger" onclick="xuatPDF()">Xuất PDF</a>
-            </div>
-        </div>
-    </div>
-</div>
 
-<!-- JavaScript to handle export format selection -->
-<script>
-    function xuatCSV() {
-        const monHocId = '${selectedMonHocId}';
-        const lopHocId = '${selectedLopHocId}';
-        const url = `${pageContext.request.contextPath}/diem/export/csv?monHocId=${selectedMonHocId}&lopHocId=${selectedLopHocId}`;
-        window.location.href = url;
-    }
-    
-       function xuatPDF() {
-        const monHocId = '${selectedMonHocId}';
-        const lopHocId = '${selectedLopHocId}';
-        const url = `${pageContext.request.contextPath}/diem/export/csv?monHocId=${selectedMonHocId}&lopHocId=${selectedLopHocId}`;
-        window.location.href = url;
-    }
-</script>
+            <div class="modal fade" id="exportModal" tabindex="-1" role="dialog" aria-labelledby="exportModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exportModalLabel">Chọn định dạng xuất</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <a href="#" class="btn btn-info" onclick="xuatCSV()">Xuất CSV</a>
+                            <a href="#" class="btn btn-danger" onclick="xuatPDF()">Xuất PDF</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                function xuatCSV() {
+                     const monHocId = '${selectedMonHocId}';
+                     const lopHocId = '${selectedLopHocId}';
+                     const url = `${pageContext.request.contextPath}/diem/export/csv?monHocId=${selectedMonHocId}&lopHocId=${selectedLopHocId}`;
+                            window.location.href = url;
+                        }
+
+                        function xuatPDF() {
+                            const monHocId = '${selectedMonHocId}';
+                            const lopHocId = '${selectedLopHocId}';
+                            const url = `${pageContext.request.contextPath}/diem/export/pdf?monHocId=${selectedMonHocId}&lopHocId=${selectedLopHocId}`;
+                                    window.location.href = url;
+                                }
+            </script>
 
             <!-- Bootstrap JS and dependencies -->
             <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
             <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        </div>
     </body>
 </html>

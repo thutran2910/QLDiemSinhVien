@@ -21,8 +21,7 @@ import org.springframework.web.servlet.view.JstlView;
 @ComponentScan(basePackages = {
     "com.tmt.controllers",
     "com.tmt.repository",
-    "com.tmt.service",
-    "com.tmt.components"
+    "com.tmt.service"
 })
 @EnableTransactionManagement
 public class WebAppContextConfigs implements WebMvcConfigurer {
@@ -35,17 +34,16 @@ public class WebAppContextConfigs implements WebMvcConfigurer {
     @Bean
     public InternalResourceViewResolver internalResourceViewResolver() {
         InternalResourceViewResolver r = new InternalResourceViewResolver();
-        r.setViewClass(JstlView.class);
         r.setPrefix("/WEB-INF/pages/");
         r.setSuffix(".jsp");
         return r;
     }
-    @Bean
-    public CommonsMultipartResolver multipartResolver() {
-        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
-        resolver.setDefaultEncoding("UTF-8");
-        return resolver;
-    }
+//    @Bean
+//    public CommonsMultipartResolver multipartResolver() {
+//        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+//        resolver.setDefaultEncoding("UTF-8");
+//        return resolver;
+//    }
 
     
 

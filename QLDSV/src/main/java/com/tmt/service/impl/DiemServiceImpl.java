@@ -5,6 +5,7 @@
 package com.tmt.service.impl;
 
 import com.tmt.pojo.Diem;
+import com.tmt.pojo.DiemTrungBinh;
 import com.tmt.pojo.HocKy;
 import com.tmt.pojo.LoaiDiem;
 import com.tmt.pojo.LopHoc;
@@ -12,11 +13,21 @@ import com.tmt.pojo.MonHoc;
 import com.tmt.pojo.SinhVien;
 import com.tmt.repository.DiemRepository;
 import com.tmt.service.DiemService;
+import com.itextpdf.text.Element;
+import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import java.util.List;
+import java.util.Map;
+import javax.servlet.http.HttpServletResponse;
 
 @Service
 public class DiemServiceImpl implements DiemService {
@@ -45,13 +56,12 @@ public class DiemServiceImpl implements DiemService {
     public List<MonHoc> getAllMonHocs() {
         return diemRepository.getAllMonHocs();
     }
-    
+
     @Override
     @Transactional(readOnly = true)
     public List<LopHoc> getAllLopHocs() {
         return diemRepository.getAllLopHocs();
     }
-
 
     @Override
     @Transactional(readOnly = true)
@@ -95,37 +105,56 @@ public class DiemServiceImpl implements DiemService {
         return diemRepository.getDiemByMonHocIdAndLopHocId(monHocId, lopHocId);
     }
 
-//    @Override
-//    @Transactional(readOnly = true)
-//    public float calculateAverageScore(int sinhVienId, int monHocId) {
-//        // Lấy tất cả điểm của sinh viên và môn học
-//        List<Diem> diemList = diemRepository.getDiemBySinhVienIdAndMonHocIdAndLopHocId(sinhVienId, monHocId, lopHocId);
-//        float totalMidtermScore = 0;
-//        float totalFinalScore = 0;
-//        int countMidterm = 0;
-//        int countFinal = 0;
-//
-//        // Lặp qua các điểm và tính tổng điểm giữa kỳ và cuối kỳ
-//        for (Diem diem : diemList) {
-//            if (diem.getLoaiDiem().getName().equalsIgnoreCase("Diem giua ki")) {
-//                totalMidtermScore += diem.getScore();
-//                countMidterm++;
-//            } else if (diem.getLoaiDiem().getName().equalsIgnoreCase("Diem cuoi ki")) {
-//                totalFinalScore += diem.getScore();
-//                countFinal++;
-//            }
-//        }
-//
-//        // Tính điểm trung bình
-//        float averageMidterm = countMidterm > 0 ? totalMidtermScore / countMidterm : 0;
-//        float averageFinal = countFinal > 0 ? totalFinalScore / countFinal : 0;
-//
-//        // Điểm trung bình = 50% điểm giữa kỳ + 50% điểm cuối kỳ
-//        return (averageMidterm * 0.5f) + (averageFinal * 0.5f);
-//    }
+    @Override
+    public void exportDiemToPdf(HttpServletResponse response, List<Diem> diemList) throws IOException {
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "attachment; filename=DanhSachDiem.pdf");
+
+        Document document = new Document();
+        try {
+            PdfWriter writer = PdfWriter.getInstance(document, response.getOutputStream());
+            document.open();
+
+            // Nội dung của tài liệu
+            Paragraph title = new Paragraph("DANH SACH DIEM MON HOC");
+            title.setAlignment(Element.ALIGN_CENTER);
+            document.add(title);
+
+            PdfPTable table = new PdfPTable(5);
+            table.addCell("Sinh vien");
+            table.addCell("Lop hoc");
+            table.addCell("Mon hoc");
+            table.addCell("Diem");
+            table.addCell("Loai diem");
+
+            for (Diem diem : diemList) {
+                table.addCell(diem.getSinhVien().getName());
+                table.addCell(diem.getLopHoc().getName());
+                table.addCell(diem.getMonHoc().getName());
+                table.addCell(String.valueOf(diem.getScore()));
+                table.addCell(diem.getLoaiDiem().getName());
+            }
+
+            document.add(table);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            document.close();  // Đóng tài liệu trong khối finally
+        }
+    }
+
+ @Override
+    public Double getAverageScoreForStudent(int sinhVienId, int monHocId, int lopHocId) {
+        return diemRepository.getAverageScoreForStudent(sinhVienId, monHocId, lopHocId);
+    }
 
     @Override
-    public List<Diem> getDiemBySinhVienId(int sinhVienId) {
+    public List<Object[]> getAllAverageScores(int monHocId, int lopHocId) {
+        return diemRepository.getAllAverageScores( monHocId, lopHocId);
+    }
+
+    @Override
+    public List<Object[]> getHighestAverageScoresByClass(int monHocId) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

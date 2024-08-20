@@ -1,24 +1,21 @@
 package com.tmt.configs;
 
+
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class DispatcherServletInit extends AbstractAnnotationConfigDispatcherServletInitializer {
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[] {
-            HibernateConfigs.class,
-            TilesConfigs.class,
-            SpringSecurityConfigs.class,
-            JwtSecurityConfig.class
-        };
+        return null;
     }
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
         return new Class[]{
             WebAppContextConfigs.class,
-            HibernateConfigs.class
+            HibernateConfigs.class,
+            SpringSecurityConfigs.class
         };
     }
 

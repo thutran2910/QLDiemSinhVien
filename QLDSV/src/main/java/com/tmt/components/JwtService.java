@@ -13,69 +13,61 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import org.springframework.stereotype.Component;
+
 import java.text.ParseException;
 import java.util.Date;
-import org.springframework.stereotype.Component;
-/**
- *
- * @author hp
- */
+
 @Component
 public class JwtService {
 
-    public static final String SECRET_KEY = "11111111111111111111111111111111";
-    public static final byte[] SHARED_SECRET_KEY = SECRET_KEY.getBytes();
-    public static final int EXPIRE_TIME = 86400000;
+    private static final String SECRET_KEY = "11111111111111111111111111111111";
+    private static final byte[] SHARED_SECRET_KEY = SECRET_KEY.getBytes();
+    private static final int EXPIRE_TIME = 86400000; // 24 hours in milliseconds
 
     public String generateTokenLogin(String username) {
-        String token = null;
         try {
             JWSSigner signer = new MACSigner(SHARED_SECRET_KEY);
-            
-            JWTClaimsSet.Builder builder = new JWTClaimsSet.Builder();
-            builder.claim("username", username);
-            builder.expirationTime(new Date(System.currentTimeMillis() + EXPIRE_TIME));
-            
-            JWTClaimsSet claimsSet = builder.build();
+
+            JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
+                    .claim("username", username)
+                    .expirationTime(new Date(System.currentTimeMillis() + EXPIRE_TIME))
+                    .build();
+
             SignedJWT signedJWT = new SignedJWT(new JWSHeader(JWSAlgorithm.HS256), claimsSet);
-            
             signedJWT.sign(signer);
-            token = signedJWT.serialize();
+            return signedJWT.serialize();
         } catch (JOSEException e) {
-            System.out.println(e.getMessage());
+            throw new RuntimeException("Error generating JWT token", e);
         }
-        return token;
     }
 
     private JWTClaimsSet getClaimsFromToken(String token) {
-        JWTClaimsSet claims = null;
         try {
             SignedJWT signedJWT = SignedJWT.parse(token);
             JWSVerifier verifier = new MACVerifier(SHARED_SECRET_KEY);
             if (signedJWT.verify(verifier)) {
-                claims = signedJWT.getJWTClaimsSet();
+                return signedJWT.getJWTClaimsSet();
+            } else {
+                throw new RuntimeException("JWT token verification failed");
             }
         } catch (JOSEException | ParseException e) {
-            System.err.println(e.getMessage());
+            throw new RuntimeException("Error parsing JWT token", e);
         }
-        return claims;
     }
-    
+
     private Date getExpirationDateFromToken(String token) {
         JWTClaimsSet claims = getClaimsFromToken(token);
-        Date expiration = claims.getExpirationTime();
-        return expiration;
+        return claims.getExpirationTime();
     }
 
     public String getUsernameFromToken(String token) {
-        String username = null;
         try {
             JWTClaimsSet claims = getClaimsFromToken(token);
-            username = claims.getStringClaim("username");
-        } catch (ParseException e) {
-            System.err.println(e.getMessage());
+            return claims.getStringClaim("username");
+        } catch (Exception e) {
+            throw new RuntimeException("Error retrieving username from JWT token", e);
         }
-        return username;
     }
 
     private Boolean isTokenExpired(String token) {
@@ -84,11 +76,15 @@ public class JwtService {
     }
 
     public Boolean validateTokenLogin(String token) {
-        if (token == null || token.trim().length() == 0) {
+        if (token == null || token.trim().isEmpty()) {
             return false;
         }
-        String username = getUsernameFromToken(token);
-        
-        return !(username == null || username.isEmpty() || isTokenExpired(token));
+        try {
+            String username = getUsernameFromToken(token);
+            return username != null && !username.isEmpty() && !isTokenExpired(token);
+        } catch (Exception e) {
+            // Log exception details if needed
+            return false;
+        }
     }
 }
