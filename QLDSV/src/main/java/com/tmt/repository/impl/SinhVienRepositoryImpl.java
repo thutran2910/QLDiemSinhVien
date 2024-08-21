@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.tmt.repository.impl;
 
 import com.tmt.pojo.Khoa;
@@ -20,6 +16,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
+import javax.persistence.criteria.Predicate;
 
 @Repository
 public class SinhVienRepositoryImpl implements SinhVienRepository {
@@ -43,7 +40,7 @@ public class SinhVienRepositoryImpl implements SinhVienRepository {
     }
 
     @Override
-    public SinhVien findById(int id) {
+    public SinhVien getSinhVienById(int id) {
         Session session = sessionFactory.openSession();
         SinhVien sinhVien = session.get(SinhVien.class, id);
         session.close();
@@ -79,6 +76,26 @@ public class SinhVienRepositoryImpl implements SinhVienRepository {
         Query<SinhVien> q = session.createQuery(query);
         List<SinhVien> sinhViens = q.getResultList();
         session.close();
+        return sinhViens;
+    }
+    
+    @Override
+    public List<SinhVien> searchByTerm(String searchTerm) {
+        Session session = sessionFactory.getCurrentSession();
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<SinhVien> criteriaQuery = criteriaBuilder.createQuery(SinhVien.class);
+        Root<SinhVien> sinhVienRoot = criteriaQuery.from(SinhVien.class);
+
+        Predicate idPredicate = criteriaBuilder.like(sinhVienRoot.get("id").as(String.class), "%" + searchTerm + "%");
+        Predicate namePredicate = criteriaBuilder.like(sinhVienRoot.get("name"), "%" + searchTerm + "%");
+        Predicate combinedPredicate = criteriaBuilder.or(idPredicate, namePredicate);
+
+        criteriaQuery.select(sinhVienRoot)
+                .where(combinedPredicate);
+
+        Query<SinhVien> query = session.createQuery(criteriaQuery);
+        List<SinhVien> sinhViens = query.getResultList();
+
         return sinhViens;
     }
 

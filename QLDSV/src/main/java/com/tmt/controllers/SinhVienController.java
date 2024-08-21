@@ -33,7 +33,6 @@ public class SinhVienController {
             @RequestParam(value = "size", defaultValue = "7") int pageSize,
             Model model) {
 
-        // Ensure page is at least 1
         if (page < 1) {
             page = 1;
         }
@@ -42,10 +41,9 @@ public class SinhVienController {
         int totalItems = sinhVienService.countAll();
         int totalPages = (int) Math.ceil((double) totalItems / pageSize);
 
-        // Ensure page is not greater than totalPages
         if (page > totalPages) {
             page = totalPages;
-            sinhVienList = sinhVienService.findAll(page, pageSize); // Refresh list for the corrected page
+            sinhVienList = sinhVienService.findAll(page, pageSize); 
         }
 
         model.addAttribute("sinhVienList", sinhVienList);
@@ -57,7 +55,7 @@ public class SinhVienController {
 
     @GetMapping("/chitietsinhvien")
     public String viewSinhVienDetail(@RequestParam("id") int id, Model model) {
-        SinhVien sinhVien = sinhVienService.findById(id);
+        SinhVien sinhVien = sinhVienService.getSinhVienById(id);
         if (sinhVien != null) {
             model.addAttribute("sinhVien", sinhVien);
             return "ChiTietSinhVien";
@@ -65,10 +63,17 @@ public class SinhVienController {
             return "error";
         }
     }
+    
+     @GetMapping("/search")
+    public String searchStudent(@RequestParam("searchTerm") String searchTerm, Model model) {
+        List<SinhVien> students = sinhVienService.searchSinhVienByTerm(searchTerm);
+        model.addAttribute("students", students);
+        return "SinhVienTimThay";
+    }
 
     @GetMapping("/sinhvien/{id}/saveOrUpdate")
     public String showForm(@PathVariable("id") Integer id, Model model) {
-        SinhVien sinhVien = (id != null) ? sinhVienService.findById(id) : new SinhVien();
+        SinhVien sinhVien = (id != null) ? sinhVienService.getSinhVienById(id) : new SinhVien();
         List<LopHoc> lopHocs = sinhVienService.getAllLopHocs();
         List<Khoa> khoas = sinhVienService.getAllKhoas();
         List<NganhDaoTao> nganhDaoTaos = sinhVienService.getAllNganhDaoTaos();
@@ -134,4 +139,5 @@ public class SinhVienController {
         sinhVienService.deleteById(id);
         return "redirect:/dssv";
     }
+
 }

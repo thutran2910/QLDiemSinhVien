@@ -7,10 +7,9 @@
 <!DOCTYPE html>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page session="false" %>
 <html>
 <head>
-    <title>QUẢN LÝ ĐIỂM SINH VIÊN</title>
+    <title>Trang chủ</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -29,7 +28,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="<c:url value='/dslop'/>">Lớp</a>
-                </li>              
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="<c:url value='/diem'/>">Điểm</a>
                 </li>
@@ -37,7 +36,7 @@
                     <a class="nav-link" href="<c:url value='/bctk'/>">Báo cáo thống kê</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="<c:url value='/logout'/>">Đăng xuất</a>
+                    <a class="nav-link" href="${pageContext.request.contextPath}/dangxuat">Đăng xuất</a>
                 </li>
             </ul>
         </div>

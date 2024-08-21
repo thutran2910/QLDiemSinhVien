@@ -1,48 +1,77 @@
-//package com.tmt.controllers;
-//
-///*
-// * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-// * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
-// */
-//
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Controller;
-//import org.springframework.web.bind.annotation.PostMapping;
-//import org.springframework.web.bind.annotation.RequestParam;
-//import org.springframework.web.multipart.MultipartFile;
-//import org.springframework.web.servlet.ModelAndView;
-//import com.tmt.service.UserService;
-//import java.util.Map;
-//
-//@Controller
-//public class DangKyController {
-//
-//    @Autowired
-//    private UserService userService;
-//
-//    @PostMapping("/register")
-//    public ModelAndView registerUser(
-//            @RequestParam("firstName") String firstName,
-//            @RequestParam("lastName") String lastName,
-//            @RequestParam("email") String email,
-//            @RequestParam("phone") String phone,
-//            @RequestParam("username") String username,
-//            @RequestParam("password") String password,
-//            @RequestParam("userRole") String userRole,
-//            @RequestParam("avatar") MultipartFile avatar) {
-//        try {
-//            userService.addUser(Map.of(
-//                "firstName", firstName,
-//                "lastName", lastName,
-//                "email", email,
-//                "phone", phone,
-//                "username", username,
-//                "password", password,
-//                "userRole", userRole
-//            ), avatar);
-//            return new ModelAndView("redirect:/login");
-//        } catch (Exception e) {
-//            return new ModelAndView("register", "errorMessage", e.getMessage());
-//        }
-//    }
-//}
+package com.tmt.controllers;
+
+import com.tmt.pojo.Khoa;
+import com.tmt.pojo.LopHoc;
+import com.tmt.pojo.NganhDaoTao;
+import com.tmt.pojo.SinhVien;
+import com.tmt.service.SinhVienService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpSession;
+import java.util.List;
+
+@Controller
+@RequestMapping("/dangky")  // Define a common base path for all methods in this controller
+public class DangKyController {
+
+    private final SinhVienService sinhVienService;
+
+    @Autowired
+    public DangKyController(SinhVienService sinhVienService) {
+        this.sinhVienService = sinhVienService;
+    }
+
+    @GetMapping
+    public String showRegisterForm(Model model) {
+        SinhVien sinhVien = new SinhVien(); // Create an empty SinhVien object for the form
+        List<LopHoc> lopHocs = sinhVienService.getAllLopHocs();
+        List<Khoa> khoas = sinhVienService.getAllKhoas();
+        List<NganhDaoTao> nganhDaoTaos = sinhVienService.getAllNganhDaoTaos();
+
+        model.addAttribute("sinhVien", sinhVien);
+        model.addAttribute("lopHocs", lopHocs);
+        model.addAttribute("khoas", khoas);
+        model.addAttribute("nganhDaoTaos", nganhDaoTaos);
+
+        return "DangKy"; // Name of the registration page
+    }
+
+    @PostMapping
+    public String registerSinhVien(@ModelAttribute("sinhVien") SinhVien sinhVien, BindingResult result, Model model, HttpSession session) {
+        if (result.hasErrors()) {
+            List<LopHoc> lopHocs = sinhVienService.getAllLopHocs();
+            List<Khoa> khoas = sinhVienService.getAllKhoas();
+            List<NganhDaoTao> nganhDaoTaos = sinhVienService.getAllNganhDaoTaos();
+
+            model.addAttribute("sinhVien", sinhVien);
+            model.addAttribute("lopHocs", lopHocs);
+            model.addAttribute("khoas", khoas);
+            model.addAttribute("nganhDaoTaos", nganhDaoTaos);
+
+            return "DangKy"; // Return to registration page if there are errors
+        }
+
+        // Validate email domain
+        if (!sinhVien.getEmail().endsWith("@ou.edu.vn")) {
+            model.addAttribute("emailError", "Email phải có đuôi @ou.edu.vn");
+            List<LopHoc> lopHocs = sinhVienService.getAllLopHocs();
+            List<Khoa> khoas = sinhVienService.getAllKhoas();
+            List<NganhDaoTao> nganhDaoTaos = sinhVienService.getAllNganhDaoTaos();
+
+            model.addAttribute("sinhVien", sinhVien);
+            model.addAttribute("lopHocs", lopHocs);
+            model.addAttribute("khoas", khoas);
+            model.addAttribute("nganhDaoTaos", nganhDaoTaos);
+
+            return "DangKy"; // Return to registration page if email validation fails
+        }
+
+        sinhVienService.saveOrUpdate(sinhVien);
+        session.setAttribute("message", "Đăng ký thành công!");
+        return "redirect:/dangnhap"; // Redirect to login page after successful registration
+    }
+}

@@ -15,11 +15,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class SinhVienServiceImpl implements SinhVienService {
 
     private final SinhVienRepository sinhVienRepository;
+
+//    @Autowired
+//    private CloudinaryService cloudinaryService;
 
     @Autowired
     public SinhVienServiceImpl(SinhVienRepository sinhVienRepository) {
@@ -28,8 +32,8 @@ public class SinhVienServiceImpl implements SinhVienService {
 
     @Override
     @Transactional(readOnly = true)
-    public SinhVien findById(int id) {
-        return sinhVienRepository.findById(id);
+    public SinhVien getSinhVienById(int id) {
+        return sinhVienRepository.getSinhVienById(id);
     }
 
     @Override
@@ -68,8 +72,8 @@ public class SinhVienServiceImpl implements SinhVienService {
         sinhVienRepository.save(sinhVien);
     }
 
+
     @Override
-    @Transactional
     public void saveOrUpdate(SinhVien sinhVien) {
         sinhVienRepository.saveOrUpdate(sinhVien);
     }
@@ -97,4 +101,10 @@ public class SinhVienServiceImpl implements SinhVienService {
     public List<NganhDaoTao> getAllNganhDaoTaos() {
         return sinhVienRepository.getAllNganhDaoTaos();
     }
+
+    @Override
+    public List<SinhVien> searchSinhVienByTerm(String searchTerm) {
+        return sinhVienRepository.searchByTerm(searchTerm);
+    }
+
 }

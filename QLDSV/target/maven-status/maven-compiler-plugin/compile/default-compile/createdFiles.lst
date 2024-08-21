@@ -1,6 +1,7 @@
 com\tmt\repository\impl\NguoiDungRepositoryImpl.class
 com\tmt\repository\impl\VaiTroRepositoryImpl.class
 com\tmt\pojo\NguoiDung.class
+com\tmt\components\PasswordHashGenerator.class
 com\tmt\service\impl\MonHocServiceImpl.class
 com\tmt\service\DiemService.class
 com\tmt\pojo\Khoa.class
@@ -14,8 +15,11 @@ com\tmt\pojo\GiangVienLopHoc.class
 com\tmt\repository\impl\GiangVienRepositoryImpl.class
 com\tmt\repository\DiemRepository.class
 com\tmt\pojo\GiangVienLopHocId.class
+com\tmt\filters\RestAuthenticationEntryPoint.class
+com\tmt\components\JwtService.class
 com\tmt\service\impl\LoaiDiemServiceImpl.class
 com\tmt\service\LopHocService.class
+com\tmt\controllers\DangKyController.class
 com\tmt\service\impl\VaiTroServiceImpl.class
 com\tmt\service\impl\GiangVienServiceImpl.class
 com\tmt\repository\MonHocRepository.class
@@ -26,10 +30,12 @@ com\tmt\service\MonHocService.class
 com\tmt\pojo\MonHoc.class
 com\tmt\repository\impl\DiemRepositoryImpl.class
 com\tmt\repository\impl\LopHocRepositoryImpl.class
+com\tmt\filters\CustomAccessDeniedHandler.class
 com\tmt\configs\HibernateConfigs.class
 com\tmt\pojo\DiemTrungBinh.class
 com\tmt\pojo\GiangVien.class
 com\tmt\configs\SecurityAppContextConfigs.class
+com\tmt\filters\JwtAuthenticationTokenFilter.class
 com\tmt\configs\SpringSecurityConfigs.class
 com\tmt\service\impl\LopHocServiceImpl.class
 com\tmt\repository\LopHocRepository.class
