@@ -1,17 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.tmt.repository;
 
 import com.tmt.pojo.Khoa;
 import com.tmt.pojo.LopHoc;
 import com.tmt.pojo.NganhDaoTao;
 import com.tmt.pojo.SinhVien;
-
 import java.util.List;
-import java.util.Map;
-import org.springframework.web.multipart.MultipartFile;
 
 public interface SinhVienRepository {
 
@@ -40,4 +33,8 @@ public interface SinhVienRepository {
     int countAll();
 
     List<SinhVien> searchByTerm(String searchTerm);
+    
+    boolean isEmailExists(String email);
+    
+    
 }

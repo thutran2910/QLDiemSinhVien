@@ -1,9 +1,3 @@
-<%-- 
-    Document   : DanhSachDTB
-    Created on : Aug 17, 2024, 8:33:01 PM
-    Author     : HP
---%>
-
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <!DOCTYPE html>
@@ -62,11 +56,15 @@
                 <li class="nav-item">
                     <a class="nav-link" href="<c:url value='/dslop'/>">Lớp</a>
                 </li>
+ 
                 <li class="nav-item">
                     <a class="nav-link" href="<c:url value='/diem'/>">Điểm</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="<c:url value='/bctk'/>">Báo cáo thống kê</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<c:url value='/logout'/>">Đăng xuất</a>
                 </li>
             </ul>
         </div>
@@ -161,4 +159,3 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
-

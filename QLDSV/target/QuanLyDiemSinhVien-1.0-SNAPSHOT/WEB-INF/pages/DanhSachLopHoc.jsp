@@ -1,9 +1,3 @@
-<%-- 
-    Document   : DanhSachLopHoc
-    Created on : Aug 12, 2024, 11:35:17 AM
-    Author     : HP
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
@@ -58,6 +52,9 @@
                 </li>
                  <li class="nav-item">
                     <a class="nav-link" href="<c:url value='/bctk'/>">Báo cáo thống kê</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<c:url value='/logout'/>">Đăng xuất</a>
                 </li>
             </ul>
         </div>

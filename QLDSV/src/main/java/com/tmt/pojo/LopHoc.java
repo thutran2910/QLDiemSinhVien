@@ -1,9 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.tmt.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.*;
@@ -21,14 +18,16 @@ public class LopHoc implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "idNganhDaoTao")
+    @JsonIgnore
     private NganhDaoTao nganhDaoTao;
 
     @OneToMany(mappedBy = "lopHoc", fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<SinhVien> sinhViens;
 
-
     // Constructors, Getters and Setters
-    public LopHoc() {}
+    public LopHoc() {
+    }
 
     public LopHoc(Integer id, String name, NganhDaoTao nganhDaoTao) {
         this.id = id;
@@ -68,5 +67,4 @@ public class LopHoc implements Serializable {
         this.sinhViens = sinhViens;
     }
 
-    
 }

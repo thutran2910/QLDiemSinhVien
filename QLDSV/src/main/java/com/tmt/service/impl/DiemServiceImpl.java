@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.tmt.service.impl;
 
 import com.tmt.pojo.Diem;
@@ -22,12 +18,9 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import java.util.List;
-import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class DiemServiceImpl implements DiemService {
@@ -76,19 +69,19 @@ public class DiemServiceImpl implements DiemService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public void saveDiem(Diem diem) {
         diemRepository.saveDiem(diem);
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public void updateDiem(Diem diem) {
         diemRepository.updateDiem(diem);
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public void deleteDiem(int id) {
         diemRepository.deleteDiem(id);
     }
@@ -155,6 +148,6 @@ public class DiemServiceImpl implements DiemService {
 
     @Override
     public List<Object[]> getHighestAverageScoresByClass(int monHocId) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+          return diemRepository.getHighestAverageScoresByClass(monHocId);
     }
 }

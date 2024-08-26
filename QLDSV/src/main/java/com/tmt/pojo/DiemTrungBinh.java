@@ -4,21 +4,35 @@
  */
 package com.tmt.pojo;
 
-public class DiemTrungBinh {
-    private String sinhVienName;
+import java.io.Serializable;
+
+public class DiemTrungBinh implements Serializable {
+    private int sinhVienId;
+    private String name;
     private float diemTrungBinh;
 
-    public DiemTrungBinh(String sinhVienName, float diemTrungBinh) {
-        this.sinhVienName = sinhVienName;
+    public DiemTrungBinh(int sinhVienId, String name, float diemTrungBinh) {
+        this.sinhVienId = sinhVienId;
+        this.name = name;
         this.diemTrungBinh = diemTrungBinh;
     }
 
-    public String getSinhVienName() {
-        return sinhVienName;
+    // Getters and setters
+
+    public int getSinhVienId() {
+        return sinhVienId;
     }
 
-    public void setSinhVienName(String sinhVienName) {
-        this.sinhVienName = sinhVienName;
+    public void setSinhVienId(int sinhVienId) {
+        this.sinhVienId = sinhVienId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public float getDiemTrungBinh() {

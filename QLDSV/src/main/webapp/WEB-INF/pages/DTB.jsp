@@ -1,9 +1,3 @@
-<%-- 
-    Document   : DTB
-    Created on : Aug 17, 2024, 8:33:51 PM
-    Author     : HP
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>

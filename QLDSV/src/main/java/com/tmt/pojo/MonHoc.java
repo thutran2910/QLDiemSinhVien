@@ -4,11 +4,15 @@
  */
 package com.tmt.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.io.Serializable;
+import java.util.List;
+import java.util.Set;
 import javax.persistence.*;
 
 @Entity
 @Table(name = "monhoc")
-public class MonHoc {
+public class MonHoc implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +23,12 @@ public class MonHoc {
 
     @ManyToOne
     @JoinColumn(name = "idDienDan")
+
     private DienDan dienDan;
+
+    @OneToMany(mappedBy = "monHoc", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Diem> diems;
 
     // Getters and Setters
     public int getId() {
@@ -44,5 +53,13 @@ public class MonHoc {
 
     public void setDienDan(DienDan dienDan) {
         this.dienDan = dienDan;
+    }
+
+    public List<Diem> getDiems() {
+        return diems;
+    }
+
+    public void setDiems(List<Diem> diems) {
+        this.diems = diems;
     }
 }

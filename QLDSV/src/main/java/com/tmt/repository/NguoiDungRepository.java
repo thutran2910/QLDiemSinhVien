@@ -4,10 +4,11 @@
  */
 package com.tmt.repository;
 
-
 import com.tmt.pojo.NguoiDung;
 
 
 public interface NguoiDungRepository {
     NguoiDung getUserByUsername(String username);
+    boolean authUser(String username, String password) ;
 }
+

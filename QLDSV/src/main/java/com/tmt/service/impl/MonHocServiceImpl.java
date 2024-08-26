@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.tmt.service.impl;
 
 import com.tmt.pojo.MonHoc;
@@ -11,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class MonHocServiceImpl implements MonHocService {
@@ -23,7 +20,23 @@ public class MonHocServiceImpl implements MonHocService {
     }
 
     @Override
-    public List<MonHoc> getNameMonHoc() {  // Changed from findAll
+    public List<MonHoc> getNameMonHoc() { 
         return monHocRepository.getNameMonHoc();
+    }
+    
+    @Override
+    @Transactional
+    public List<MonHoc> getMonHocsBySinhVienId(int sinhVienId) {
+        return monHocRepository.getMonHocsBySinhVienId(sinhVienId);
+    }
+
+    @Override
+    public List<MonHoc> getAllMonHocs() {
+      return monHocRepository.getAllMonHocs();
+    }
+
+    @Override
+    public MonHoc getMonHocById(int id) {
+       return monHocRepository.getMonHocById(id);
     }
 }

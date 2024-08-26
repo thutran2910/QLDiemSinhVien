@@ -1,138 +1,128 @@
-<%-- 
-    Document   : ThemSinhVien
-    Created on : Aug 12, 2024, 11:37:43 AM
-    Author     : HP
---%>
-
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-<!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Thêm sinh viên</title>
     <meta charset="UTF-8">
-    <!-- Thêm liên kết đến Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-        <style>
-        h1 {
-           text-align: center;
-        }
-   
-        button{
-            text-align: center;
+    <title>Đăng Ký Tài Khoản Sinh Viên</title>
+    <style>
+        body {
+            background-color: #87CEEB; /* Màu nền của trang */
+            font-family: Arial, sans-serif; /* Font chữ */
+            display: flex;
+            justify-content: center;
             align-items: center;
-            margin: 20px 500px;
-            width:150px;
+            height: 100vh;
+            margin: 0;
+        }
+        .register-container {
+            margin-top: 30px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px; 
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+            width: 400px; 
+            height: auto;
+        }
+        .register-container h2 {
+            margin-top: 0;
+            text-align: center;
+        }
+        .register-container div {
+            margin-bottom: 15px;
+        }
+        .register-container label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .register-container input,
+        .register-container select {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .register-container button {
+            background-color: #4CAF50; /* Màu nền của nút */
+            color: white; /* Màu chữ của nút */
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%; /* Nút rộng bằng với chiều rộng của form */
+        }
+        .register-container button:hover {
+            background-color: #45a049; /* Màu nền khi di chuột qua nút */
+        }
+        .register-container p {
+            color: red; /* Màu của thông báo lỗi */
+            text-align: center;
+        }
+        .register-container .login-link {
+            text-align: center;
+        }
+        .register-container .login-link a {
+            color: #4CAF50; /* Màu liên kết */
+            text-decoration: none;
         }
     </style>
 </head>
 <body>
-     <!-- Navbar Bootstrap -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">Quản Lý Điểm Sinh Viên</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="<c:url value='/'/>">Trang chủ <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="<c:url value='/dssv'/>">Sinh viên</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="<c:url value='/dslop'/>">Lớp</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="<c:url value='/diem'/>">Điểm</a>
-                </li>
-                 <li class="nav-item">
-                    <a class="nav-link" href="<c:url value='/bctk'/>">Báo cáo thống kê</a>
-                </li>
-            </ul>
+    <div class="register-container">
+        <h2>ĐĂNG KÝ TÀI KHOẢN SINH VIÊN</h2>
+        <form:form action="${pageContext.request.contextPath}/dangki" modelAttribute="sinhVien" method="post">
+            <div>
+                <form:label path="name">Họ và tên:</form:label>
+                <form:input path="name"/>
+                <form:errors path="name" cssClass="error"/>
+            </div>
+            <div>
+                <form:label path="queQuan">Quê Quán:</form:label>
+                <form:input path="queQuan"/>
+                <form:errors path="queQuan" cssClass="error"/>
+            </div>
+            <div>
+                <form:label path="gioiTinh">Giới Tính:</form:label>
+                <form:select path="gioiTinh">
+                    <form:option value="Nam">Nam</form:option>
+                    <form:option value="Nữ">Nữ</form:option>
+                    <form:option value="Khác">Khác</form:option>
+                </form:select>
+                <form:errors path="gioiTinh" cssClass="error"/>
+            </div>
+            <div>
+                <form:label path="ngaySinh">Ngày Sinh:</form:label>
+                <form:input path="ngaySinh" type="date"/>
+                <form:errors path="ngaySinh" cssClass="error"/>
+            </div>
+            <div>
+                <form:label path="email">Email:</form:label>
+                <form:input path="email"/>
+                <form:errors path="email" cssClass="error"/>
+            </div>
+            <div>
+                <form:label path="username">Tên tài khoản:</form:label>
+                <form:input path="username"/>
+                <form:errors path="username" cssClass="error"/>
+            </div>
+            <div>
+                <form:label path="password">Mật khẩu:</form:label>
+                <form:input path="password" type="password"/>
+                <form:errors path="password" cssClass="error"/>
+            </div>
+            <div>
+                <button type="submit">Đăng Ký</button>
+            </div>
+        </form:form>
+
+        <div class="login-link">
+            <a href="${pageContext.request.contextPath}/login">Đã có tài khoản? Đăng nhập...</a>
         </div>
-    </nav>
-                
-    <div class="container mt-4">
-        <h1>THÊM THÔNG TIN SINH VIÊN</h1>
-        <form action="<c:url value='/sinhvien/saveOrUpdate'/>" method="post">
-            <input type="hidden" name="id" value="${sinhVien.id}"/>
-            
-            <div class="form-group">
-                <label for="name">Họ và tên:</label>
-                <input type="text" id="name" name="name" class="form-control" value="${sinhVien.name}" />
-                <span style="color:red">${error.name}</span>
-            </div>
 
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" class="form-control" value="${sinhVien.email}" />
-                <span style="color:red">${error.email}</span>
-            </div>
-
-            <div class="form-group">
-                <label for="ngaySinh">Ngày sinh:</label>
-                <input type="date" id="ngaySinh" name="ngaySinh" class="form-control" value="${sinhVien.ngaySinh}" />
-                <span style="color:red">${error.ngaySinh}</span>
-            </div>
-
-            <div class="form-group">
-                <label for="queQuan">Quê quán:</label>
-                <input type="text" id="queQuan" name="queQuan" class="form-control" value="${sinhVien.queQuan}" />
-                <span style="color:red">${error.queQuan}</span>
-            </div>
-
-            <div class="form-group">
-                <label for="lopHoc">Lớp:</label>
-                <select id="lopHoc" name="lopHoc.id" class="form-control">
-                    <c:forEach items="${lopHocs}" var="lopHoc">
-                        <option value="${lopHoc.id}" ${lopHoc.id == sinhVien.lopHoc.id ? 'selected' : ''}>${lopHoc.name}</option>
-                    </c:forEach>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="khoa">Khoa:</label>
-                <select id="khoa" name="khoa.id" class="form-control">
-                    <c:forEach items="${khoas}" var="khoa">
-                        <option value="${khoa.id}" ${khoa.id == sinhVien.khoa.id ? 'selected' : ''}>${khoa.name}</option>
-                    </c:forEach>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="nganhDaoTao">Ngành đào tạo:</label>
-                <select id="nganhDaoTao" name="nganhDaoTao.id" class="form-control">
-                    <c:forEach items="${nganhDaoTaos}" var="nganhDaoTao">
-                        <option value="${nganhDaoTao.id}" ${nganhDaoTao.id == sinhVien.nganhDaoTao.id ? 'selected' : ''}>${nganhDaoTao.name}</option>
-                    </c:forEach>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Giới tính:</label><br>
-                <div class="form-check">
-                    <input type="radio" id="gioiTinhNam" name="gioiTinh" value="Nam" class="form-check-input"
-                           <c:if test="${sinhVien.gioiTinh == 'Nam'}">checked</c:if> />
-                    <label for="gioiTinhNam" class="form-check-label">Nam</label>
-                </div>
-                <div class="form-check">
-                    <input type="radio" id="gioiTinhNu" name="gioiTinh" value="Nu" class="form-check-input"
-                           <c:if test="${sinhVien.gioiTinh == 'Nu'}">checked</c:if> />
-                    <label for="gioiTinhNu" class="form-check-label">Nữ</label>
-                </div>
-            </div>
-
-            <button type="submit" class="btn btn-primary">Lưu thông tin</button>
-        </form>
+        <c:if test="${not empty errorMessage}">
+            <p>${errorMessage}</p>
+        </c:if>
     </div>
-
-    <!-- Thêm liên kết đến Bootstrap JS và các phụ thuộc -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

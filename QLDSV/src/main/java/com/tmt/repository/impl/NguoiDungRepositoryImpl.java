@@ -1,10 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.tmt.repository.impl;
 
 import com.tmt.pojo.NguoiDung;
+import com.tmt.repository.NguoiDungRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -15,22 +12,30 @@ import javax.transaction.Transactional;
 import java.util.List;
 import org.hibernate.query.Query;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
-import com.tmt.repository.NguoiDungRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Repository
 @Transactional
 public class NguoiDungRepositoryImpl implements NguoiDungRepository {
 
     @Autowired
-    private LocalSessionFactoryBean factory;
+    private SessionFactory sessionFactory;
+    
+    @Autowired
+    private BCryptPasswordEncoder passEncoder;
 
     @Override
     public NguoiDung getUserByUsername(String username) {
-        Session s = this.factory.getObject().getCurrentSession();
-        Query q = s.createNamedQuery("NguoiDung.findByUsername");
-        q.setParameter("username", username);
-
-        return (NguoiDung) q.getSingleResult();
-
+        Session session = sessionFactory.getCurrentSession();
+        Query<NguoiDung> query = session.createQuery(
+                "FROM NguoiDung u WHERE u.username = :username", NguoiDung.class);
+        query.setParameter("username", username);
+        return query.uniqueResult();
+    }
+ @Override
+    public boolean authUser(String username, String password) {
+        NguoiDung  u = this.getUserByUsername(username);
+        
+        return this.passEncoder.matches(password, u.getPassword());
     }
 }

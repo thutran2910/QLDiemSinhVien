@@ -4,14 +4,11 @@
  */
 package com.tmt.components;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-/**
- *
- * @author HP
- */
+
 public class PasswordHashGenerator {
     public static void main(String[] args) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        String rawPassword = "sv2";  // Example password
+        String rawPassword = "a1";  // Example password
         String encodedPassword = encoder.encode(rawPassword);
         System.out.println("Encoded password: " + encodedPassword);
     }

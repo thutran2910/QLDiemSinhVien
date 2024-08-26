@@ -1,9 +1,3 @@
-<%-- 
-    Document   : DanhSachDiem
-    Created on : Aug 12, 2024, 11:35:04 AM
-    Author     : HP
---%>
-
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <!DOCTYPE html>
@@ -63,13 +57,16 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="<c:url value='/dslop'/>">Lớp</a>
-                    </li>
+                    </li>  
                     <li class="nav-item">
                         <a class="nav-link" href="<c:url value='/diem'/>">Điểm</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="<c:url value='/bctk'/>">Báo cáo thống kê</a>
                     </li>
+                    <li class="nav-item">
+                    <a class="nav-link" href="<c:url value='/logout'/>">Đăng xuất</a>
+                </li>
                 </ul>
             </div>
         </nav>
@@ -81,7 +78,9 @@
             <form action="${pageContext.request.contextPath}/diem" method="get" class="mb-4">
                 <div class="form-group">
                     <label for="monHocId"><strong>Môn học</strong></label>
+
                     <select id="monHocId" name="monHocId" class="form-control" onchange="this.form.submit()">
+
                         <c:forEach items="${monHocList}" var="monHoc">
                             <option value="${monHoc.id}" ${monHoc.id == selectedMonHocId ? 'selected' : ''}>
                                 ${monHoc.name}
@@ -92,7 +91,9 @@
 
                 <div class="form-group">
                     <label for="lopHocId"><strong>Lớp học</strong></label>
+
                     <select id="lopHocId" name="lopHocId" class="form-control" onchange="this.form.submit()">
+
                         <c:forEach items="${lopHocList}" var="lopHoc">
                             <option value="${lopHoc.id}" ${lopHoc.id == selectedLopHocId ? 'selected' : ''}>
                                 ${lopHoc.name}
@@ -169,7 +170,7 @@
             <div class="btn-group" role="group">
                 <a href="<c:url value='/'/>" class="btn btn-success">Trở về trang chủ</a>
                 <a href="<c:url value='/diem/form'/>" class="btn btn-warning">Nhập điểm</a>
-                <a href="<c:url value='/dtb'/>" class="btn btn-warning">DTB</a>
+<!--                <a href="<c:url value='/dtb'/>" class="btn btn-warning">DTB</a>-->
                 <!-- Export Button -->
                 <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exportModal">
                     Xuất bảng điểm
@@ -195,9 +196,9 @@
 
             <script>
                 function xuatCSV() {
-                     const monHocId = '${selectedMonHocId}';
-                     const lopHocId = '${selectedLopHocId}';
-                     const url = `${pageContext.request.contextPath}/diem/export/csv?monHocId=${selectedMonHocId}&lopHocId=${selectedLopHocId}`;
+                    const monHocId = '${selectedMonHocId}';
+                    const lopHocId = '${selectedLopHocId}';
+                    const url = `${pageContext.request.contextPath}/diem/export/csv?monHocId=${selectedMonHocId}&lopHocId=${selectedLopHocId}`;
                             window.location.href = url;
                         }
 

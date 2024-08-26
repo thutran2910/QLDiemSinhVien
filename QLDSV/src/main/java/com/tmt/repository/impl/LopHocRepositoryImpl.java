@@ -19,6 +19,7 @@ import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import org.hibernate.query.Query;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 @Repository
@@ -27,7 +28,9 @@ public class LopHocRepositoryImpl implements LopHocRepository {
 
     @Autowired
     private SessionFactory sessionFactory;
-      
+
+    private static final int PAGE_SIZE = 7;
+
     @Override
     public LopHoc findById(int id) {
         Session session = sessionFactory.getCurrentSession();
@@ -39,13 +42,13 @@ public class LopHocRepositoryImpl implements LopHocRepository {
         Session session = sessionFactory.getCurrentSession();
         return session.createQuery("from LopHoc", LopHoc.class).list();
     }
-    
-   @Override
+
+    @Override
     public List<LopHoc> getNameLopHoc() {
         Session session = sessionFactory.getCurrentSession();
         return session.createQuery("from LopHoc", LopHoc.class).list();
     }
-    
+
     @Override
     public void save(LopHoc lopHoc) {
         Session session = sessionFactory.getCurrentSession();
@@ -67,12 +70,26 @@ public class LopHocRepositoryImpl implements LopHocRepository {
         }
     }
 
-     @Override
-    public List<SinhVien> getStudentsByLopHocId(int lopHocId) {
+    @Override
+    public List<SinhVien> getStudentsByLopHocId(int lopHocId, int page, int pageSize) {
         Session session = sessionFactory.getCurrentSession();
         String hql = "SELECT s FROM SinhVien s WHERE s.lopHoc.id = :lopHocId";
-        return session.createQuery(hql, SinhVien.class)
-                      .setParameter("lopHocId", lopHocId)
-                      .getResultList();
+        Query<SinhVien> query = session.createQuery(hql, SinhVien.class)
+                .setParameter("lopHocId", lopHocId);
+
+        int offset = (page - 1) * pageSize;  // Calculate offset
+        query.setFirstResult(offset);
+        query.setMaxResults(pageSize);
+
+        return query.getResultList();
+    }
+
+    @Override
+    public int countStudentsByLopHocId(int lopHocId) {
+        Session session = sessionFactory.getCurrentSession();
+        String hql = "SELECT COUNT(s.id) FROM SinhVien s WHERE s.lopHoc.id = :lopHocId";
+        Query<Long> query = session.createQuery(hql, Long.class)
+                .setParameter("lopHocId", lopHocId);
+        return query.getSingleResult().intValue();
     }
 }

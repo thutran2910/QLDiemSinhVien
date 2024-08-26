@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.tmt.repository.impl;
 
 import com.tmt.pojo.Diem;
@@ -42,7 +38,6 @@ public class DiemRepositoryImpl implements DiemRepository {
     private EntityManager entityManager;
 
     private static final int PAGE_SIZE = 10;
-
 
     private Session getSession() {
         return sessionFactory.getCurrentSession();
@@ -144,10 +139,24 @@ public class DiemRepositoryImpl implements DiemRepository {
     }
 
     @Override
-    @Transactional
     public void saveDiem(Diem diem) {
-        Session session = sessionFactory.getCurrentSession();
-        session.save(diem);
+        Session session = null;
+        Transaction transaction = null;
+        try {          
+            session = sessionFactory.openSession();
+            transaction = session.beginTransaction();
+            session.save(diem);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
     }
 
     @Override
@@ -195,41 +204,41 @@ public class DiemRepositoryImpl implements DiemRepository {
         return q.getResultList();
     }
 
-   @Override
-public Double getAverageScoreForStudent(int sinhVienId, int monHocId, int lopHocId) {
-    Session session = sessionFactory.openSession();
+    @Override
+    public Double getAverageScoreForStudent(int sinhVienId, int monHocId, int lopHocId) {
+        Session session = sessionFactory.openSession();
 
-    try {
-        // HQL truy vấn
-        String hql = "SELECT (SUM(CASE WHEN d.loaiDiem.id = 1 THEN d.score ELSE 0 END) + "
-                + "       SUM(CASE WHEN d.loaiDiem.id = 2 THEN d.score ELSE 0 END)) / 2.0 "
-                + "FROM Diem d "
-                + "WHERE d.sinhVien.id = :sinhVienId "
-                + "AND d.monHoc.id = :monHocId "
-                + "AND d.lopHoc.id = :lopHocId";
+        try {
+            // HQL truy vấn
+            String hql = "SELECT (SUM(CASE WHEN d.loaiDiem.id = 1 THEN d.score ELSE 0 END) + "
+                    + "       SUM(CASE WHEN d.loaiDiem.id = 2 THEN d.score ELSE 0 END)) / 2.0 "
+                    + "FROM Diem d "
+                    + "WHERE d.sinhVien.id = :sinhVienId "
+                    + "AND d.monHoc.id = :monHocId "
+                    + "AND d.lopHoc.id = :lopHocId";
 
-        // Sử dụng Double.class để phù hợp với kiểu dữ liệu trả về của truy vấn
-        Query<Double> query = session.createQuery(hql, Double.class);
-        query.setParameter("sinhVienId", sinhVienId);
-        query.setParameter("monHocId", monHocId);
-        query.setParameter("lopHocId", lopHocId);
+            // Sử dụng Double.class để phù hợp với kiểu dữ liệu trả về của truy vấn
+            Query<Double> query = session.createQuery(hql, Double.class);
+            query.setParameter("sinhVienId", sinhVienId);
+            query.setParameter("monHocId", monHocId);
+            query.setParameter("lopHocId", lopHocId);
 
-        Double result = query.uniqueResult();
+            Double result = query.uniqueResult();
 
-        // Chuyển đổi kết quả về Float nếu cần thiết
-        return result != null ? result.doubleValue() : 0.0f;
-    } finally {
-        session.close();
+            // Chuyển đổi kết quả về Float nếu cần thiết
+            return result != null ? result.doubleValue() : 0.0f;
+        } finally {
+            session.close();
+        }
     }
-}
 
-@Override
-public List<Object[]> getAllAverageScores(int monHocId, int lopHocId) {
-    Session session = sessionFactory.openSession();
+    @Override
+    public List<Object[]> getAllAverageScores(int monHocId, int lopHocId) {
+        Session session = sessionFactory.openSession();
 
-    try {
-        // HQL truy vấn để lấy danh sách điểm trung bình
-        String hql = "SELECT d.sinhVien.id, d.sinhVien.name, "
+        try {
+            // HQL truy vấn để lấy danh sách điểm trung bình
+            String hql = "SELECT d.sinhVien.id, d.sinhVien.name, "
                     + "(SUM(CASE WHEN d.loaiDiem.id = 1 THEN d.score ELSE 0 END) + "
                     + "SUM(CASE WHEN d.loaiDiem.id = 2 THEN d.score ELSE 0 END)) / 2.0 "
                     + "FROM Diem d "
@@ -237,36 +246,36 @@ public List<Object[]> getAllAverageScores(int monHocId, int lopHocId) {
                     + "AND d.lopHoc.id = :lopHocId "
                     + "GROUP BY d.sinhVien.id, d.sinhVien.name";
 
-        Query<Object[]> query = session.createQuery(hql, Object[].class);
-        query.setParameter("monHocId", monHocId);
-        query.setParameter("lopHocId", lopHocId);
+            Query<Object[]> query = session.createQuery(hql, Object[].class);
+            query.setParameter("monHocId", monHocId);
+            query.setParameter("lopHocId", lopHocId);
 
-        return query.getResultList();
-    } finally {
-        session.close();
+            return query.getResultList();
+        } finally {
+            session.close();
+        }
     }
-}
 
-@Override
-public List<Object[]> getHighestAverageScoresByClass(int monHocId) {
-    Session session = sessionFactory.openSession();
+    @Override
+    public List<Object[]> getHighestAverageScoresByClass(int monHocId) {
+        Session session = sessionFactory.openSession();
 
-    try {
-        // HQL query to get the highest average score for each class
-        String hql = "SELECT d.lopHoc.id, d.lopHoc.name, MAX("
+        try {
+            // HQL query to get the highest average score for each class
+            String hql = "SELECT d.lopHoc.id, d.lopHoc.name, MAX("
                     + "(SUM(CASE WHEN d.loaiDiem.id = 1 THEN d.score ELSE 0 END) + "
                     + "SUM(CASE WHEN d.loaiDiem.id = 2 THEN d.score ELSE 0 END)) / 2.0) "
                     + "FROM Diem d "
                     + "WHERE d.monHoc.id = :monHocId "
                     + "GROUP BY d.lopHoc.id, d.lopHoc.name";
 
-        Query<Object[]> query = session.createQuery(hql, Object[].class);
-        query.setParameter("monHocId", monHocId);
+            Query<Object[]> query = session.createQuery(hql, Object[].class);
+            query.setParameter("monHocId", monHocId);
 
-        return query.getResultList();
-    } finally {
-        session.close();
+            return query.getResultList();
+        } finally {
+            session.close();
+        }
     }
-}
 
 }

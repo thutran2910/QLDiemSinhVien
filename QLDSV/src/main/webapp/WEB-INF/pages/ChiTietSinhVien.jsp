@@ -1,9 +1,3 @@
-<%-- 
-    Document   : ChiTietSinhVien
-    Created on : Aug 12, 2024, 11:34:41 AM
-    Author     : HP
---%>
-
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <!DOCTYPE html>
@@ -52,6 +46,9 @@
                      <li class="nav-item">
                     <a class="nav-link" href="<c:url value='/bctk'/>">Báo cáo thống kê</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<c:url value='/logout'/>">Đăng xuất</a>
+                </li>
                 </ul>
             </div>
         </nav>
@@ -69,6 +66,8 @@
                     <p><strong>Lớp:</strong> ${sinhVien.lopHoc.name}</p>
                     <p><strong>Khoa:</strong> ${sinhVien.khoa.name}</p>
                     <p><strong>Ngành đào tạo:</strong> ${sinhVien.nganhDaoTao.name}</p>
+                    <a href="<c:url value ='/sinhvien/monhoc?sinhVienId=${sinhVien.id}'/>">Xem Các Môn Học</a>
+
 
                 </div>
                 <div class="btn-group" role="group">

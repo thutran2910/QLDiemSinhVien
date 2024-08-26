@@ -1,11 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.tmt.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -22,15 +20,22 @@ public class SinhVien extends NguoiDung implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "idLopHoc")
+    @JsonIgnore
     private LopHoc lopHoc;
 
     @ManyToOne
     @JoinColumn(name = "idKhoa")
+    @JsonIgnore
     private Khoa khoa;
 
     @ManyToOne
     @JoinColumn(name = "idNganhDaoTao")
+    @JsonIgnore
     private NganhDaoTao nganhDaoTao;
+
+    @OneToMany(mappedBy = "sinhVien", fetch = FetchType.EAGER)
+    @JsonIgnore
+    private Set<Diem> diems;
 
     @NotNull
     @Email(message = "Email không đúng định dạng")
@@ -38,9 +43,9 @@ public class SinhVien extends NguoiDung implements Serializable {
     @Column(nullable = false, unique = true)
     private String email;
 
-   @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.DATE)
-     @Column(name = "ngaySinh", nullable = false)
+    @Column(name = "ngaySinh", nullable = false)
     private Date ngaySinh;
 
     @NotNull
@@ -51,7 +56,10 @@ public class SinhVien extends NguoiDung implements Serializable {
     @NotNull
     @Size(max = 10)
     @Column(nullable = false)
-    private String gioiTinh;  // Changed to String
+    private String gioiTinh;  
+
+    @Column(name = "avatar")
+    private String avatar; 
 
     public SinhVien() {
     }
@@ -60,7 +68,7 @@ public class SinhVien extends NguoiDung implements Serializable {
         super(id);
     }
 
-    public SinhVien(Integer id, String name, LopHoc lopHoc, Khoa khoa, NganhDaoTao nganhDaoTao, String email, Date ngaySinh, String queQuan, String gioiTinh) {
+    public SinhVien(Integer id, String name, LopHoc lopHoc, Khoa khoa, NganhDaoTao nganhDaoTao, String email, Date ngaySinh, String queQuan, String gioiTinh, String avatar) {
         super(id);
         this.name = name;
         this.lopHoc = lopHoc;
@@ -70,6 +78,7 @@ public class SinhVien extends NguoiDung implements Serializable {
         this.ngaySinh = ngaySinh;
         this.queQuan = queQuan;
         this.gioiTinh = gioiTinh;
+        this.avatar = avatar;
     }
 
     // Getters and Setters
@@ -135,5 +144,21 @@ public class SinhVien extends NguoiDung implements Serializable {
 
     public void setGioiTinh(String gioiTinh) {
         this.gioiTinh = gioiTinh;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public Set<Diem> getDiems() {
+        return diems;
+    }
+
+    public void setDiems(Set<Diem> diems) {
+        this.diems = diems;
     }
 }

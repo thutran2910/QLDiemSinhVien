@@ -1,9 +1,3 @@
-<%-- 
-    Document   : DanhSachSinhVien
-    Created on : Aug 12, 2024, 11:35:44 AM
-    Author     : HP
---%>
-
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <!DOCTYPE html>
@@ -39,6 +33,9 @@
                 margin-right: 20px;
                 margin-left: 20px;
             }
+               .search-form {
+                margin-bottom: 20px;
+            }
         </style>
     </head>
     <body>
@@ -65,12 +62,25 @@
                      <li class="nav-item">
                     <a class="nav-link" href="<c:url value='/bctk'/>">Báo cáo thống kê</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<c:url value='/logout'/>">Đăng xuất</a>
+                </li>
                 </ul>
             </div>
         </nav>
 
         <div class="container mt-4">
             <h1 class="text-center mb-4">DANH SÁCH SINH VIÊN</h1>
+            
+          <form action="<c:url value='/search'/>" method="get" class="search-form">
+            <div class="input-group">
+                <input type="text" name="searchTerm" value="${searchTerm}" class="form-control" placeholder="Tìm kiếm sinh viên..." required>
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit">Tìm kiếm</button>
+                </div>
+            </div>
+        </form>
+                
             <table class="table table-bordered">
                 <thead class="thead-dark">
                     <tr>

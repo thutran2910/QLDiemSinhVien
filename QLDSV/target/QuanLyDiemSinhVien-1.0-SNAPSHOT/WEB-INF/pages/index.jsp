@@ -1,6 +1,6 @@
 <%-- 
     Document   : index
-    Created on : Aug 12, 2024, 11:36:41 AM
+    Created on : Aug 4, 2024, 7:04:40 PM
     Author     : HP
 --%>
 
@@ -12,6 +12,6 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>QUẢN LÝ ĐIỂM SINH VIÊN</h1>
     </body>
 </html>

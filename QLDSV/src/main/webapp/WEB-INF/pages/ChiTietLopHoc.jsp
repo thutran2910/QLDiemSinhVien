@@ -1,9 +1,3 @@
-<%-- 
-    Document   : ChiTietLopHoc
-    Created on : Aug 12, 2024, 11:32:11 AM
-    Author     : HP
---%>
-
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <!DOCTYPE html>
@@ -42,7 +36,9 @@
                 margin-right: 20px;
                 margin-left: 20px;
             }
-
+            .pagination {
+                justify-content: center;
+            }
         </style>
     </head>
     <body>
@@ -62,12 +58,15 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="<c:url value='/dslop'/>">Lớp</a>
-                    </li>
+                    </li> 
                     <li class="nav-item">
                         <a class="nav-link" href="<c:url value='/diem'/>">Điểm</a>
                     </li>
-                     <li class="nav-item">
-                    <a class="nav-link" href="<c:url value='/bctk'/>">Báo cáo thống kê</a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<c:url value='/bctk'/>">Báo cáo thống kê</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link" href="<c:url value='/logout'/>">Đăng xuất</a>
                 </li>
                 </ul>
             </div>
@@ -100,9 +99,9 @@
                             <tr>
                                 <td>${sinhVien.id}</td>
                                 <td>${sinhVien.name}</td>
+                                <td>${sinhVien.email}</td>
                                 <td>${sinhVien.ngaySinh}</td>
                                 <td>${sinhVien.gioiTinh}</td>
-                                <td>${sinhVien.email}</td>
                                 <td>${sinhVien.queQuan}</td> 
                                 <td>${sinhVien.khoa.name}</td>
                                 <td>${sinhVien.nganhDaoTao.name}</td> 
@@ -110,11 +109,38 @@
                         </c:forEach>
                         <c:if test="${empty sinhVienList}">
                             <tr>
-                                <td colspan="5" class="text-center">Không có sinh viên nào</td>
+                                <td colspan="8" class="text-center">Không có sinh viên nào</td>
                             </tr>
                         </c:if>
                     </tbody>
+
                 </table>
+
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        <c:if test="${currentPage > 1}">
+                            <li class="page-item">
+                                <a class="page-link" href="<c:url value='/lophoc/${lopHoc.id}?page=${currentPage - 1}&size=${pageSize}'/>" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                        </c:if>
+                        <c:forEach var="i" begin="1" end="${totalPages}">
+                            <li class="page-item <c:if test="${i == currentPage}">active</c:if>">
+                                <a class="page-link" href="<c:url value='/lophoc/${lopHoc.id}?page=${i}&size=${pageSize}'/>">${i}</a>
+                            </li>
+                        </c:forEach>
+                        <c:if test="${currentPage < totalPages}">
+                            <li class="page-item">
+                                <a class="page-link" href="<c:url value='/lophoc/${lopHoc.id}?page=${currentPage + 1}&size=${pageSize}'/>" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </c:if>
+                    </ul>
+                </nav>
+
+
                 <div class="btn-group" role="group">
                     <a href="<c:url value='/dslop'/>" class="btn btn-success">Trở về danh sách</a>
                     <a href="<c:url value='/lophoc/edit/${lopHoc.id}'/>" class="btn btn-primary">Thêm</a>

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.tmt.service.impl;
 
 import com.tmt.pojo.HocKy;
@@ -35,18 +31,16 @@ public class LopHocServiceImpl implements LopHocService {
     public List<LopHoc> findAll() {
         return lopHocRepository.findAll();
     }
-    
-    
+
     @Override
     public List<LopHoc> getNameLopHoc() {
         return lopHocRepository.getNameLopHoc();
     }
-    
-  @Override
-    public List<SinhVien> getStudentsByLopHocId(int lopHocId) {
-        return lopHocRepository.getStudentsByLopHocId(lopHocId);
-    }
 
+    @Override
+    public List<SinhVien> getStudentsByLopHocId(int lopHocId, int page, int pageSize) {
+        return lopHocRepository.getStudentsByLopHocId(lopHocId, page, pageSize);
+    }
 
     @Override
     public void save(LopHoc lopHoc) {
@@ -61,5 +55,10 @@ public class LopHocServiceImpl implements LopHocService {
     @Override
     public void deleteById(int id) {
         lopHocRepository.deleteById(id);
+    }
+
+    @Override
+    public int countStudentsByLopHocId(int lopHocId) {
+        return lopHocRepository.countStudentsByLopHocId(lopHocId);
     }
 }

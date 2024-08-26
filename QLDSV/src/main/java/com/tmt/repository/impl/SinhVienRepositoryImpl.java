@@ -5,6 +5,9 @@ import com.tmt.pojo.LopHoc;
 import com.tmt.pojo.NganhDaoTao;
 import com.tmt.pojo.SinhVien;
 import com.tmt.repository.SinhVienRepository;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
+import java.io.IOException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -16,13 +19,18 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
+import java.util.Map;
 import javax.persistence.criteria.Predicate;
+import org.springframework.web.multipart.MultipartFile;
 
 @Repository
 public class SinhVienRepositoryImpl implements SinhVienRepository {
 
     @Autowired
     private SessionFactory sessionFactory;
+
+    @Autowired
+    private Cloudinary cloudinary;
 
     private static final int PAGE_SIZE = 10;
 
@@ -78,25 +86,21 @@ public class SinhVienRepositoryImpl implements SinhVienRepository {
         session.close();
         return sinhViens;
     }
-    
+
     @Override
     public List<SinhVien> searchByTerm(String searchTerm) {
-        Session session = sessionFactory.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();  // Use getCurrentSession
         CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
         CriteriaQuery<SinhVien> criteriaQuery = criteriaBuilder.createQuery(SinhVien.class);
         Root<SinhVien> sinhVienRoot = criteriaQuery.from(SinhVien.class);
 
-        Predicate idPredicate = criteriaBuilder.like(sinhVienRoot.get("id").as(String.class), "%" + searchTerm + "%");
+        // Tìm kiếm dựa trên trường name
         Predicate namePredicate = criteriaBuilder.like(sinhVienRoot.get("name"), "%" + searchTerm + "%");
-        Predicate combinedPredicate = criteriaBuilder.or(idPredicate, namePredicate);
 
-        criteriaQuery.select(sinhVienRoot)
-                .where(combinedPredicate);
+        criteriaQuery.select(sinhVienRoot).where(namePredicate);
 
         Query<SinhVien> query = session.createQuery(criteriaQuery);
-        List<SinhVien> sinhViens = query.getResultList();
-
-        return sinhViens;
+        return query.getResultList();
     }
 
     @Override
@@ -197,4 +201,15 @@ public class SinhVienRepositoryImpl implements SinhVienRepository {
         session.close();
         return nganhDaoTaos;
     }
+
+    @Override
+    public boolean isEmailExists(String email) {
+        Session session = sessionFactory.getCurrentSession();
+        String hql = "SELECT COUNT(*) FROM SinhVien sv WHERE sv.email = :email";
+        Long count = (Long) session.createQuery(hql)
+                .setParameter("email", email)
+                .uniqueResult();
+        return count > 0;
+    }
+
 }

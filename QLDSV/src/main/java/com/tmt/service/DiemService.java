@@ -48,5 +48,4 @@ public interface DiemService {
     List<Object[]> getAllAverageScores(int monHocId, int lopHocId);
 
     List<Object[]> getHighestAverageScoresByClass(int monHocId);
-
 }

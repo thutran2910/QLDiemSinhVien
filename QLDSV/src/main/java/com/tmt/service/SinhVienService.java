@@ -1,13 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.tmt.service;
 
 import com.tmt.pojo.SinhVien;
 import com.tmt.pojo.LopHoc;
 import com.tmt.pojo.Khoa;
 import com.tmt.pojo.NganhDaoTao;
+import java.io.IOException;
 
 import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,10 +30,14 @@ public interface SinhVienService {
     void update(SinhVien sinhVien);
 
     void saveOrUpdate(SinhVien sinhVien);
-    
+
     void deleteById(int id);
 
     int countAll();
 
     List<SinhVien> searchSinhVienByTerm(String searchTerm);
+
+    boolean registerSinhVien(SinhVien sinhVien);
+
+    String uploadAvatar(MultipartFile file, int sinhVienId);
 }

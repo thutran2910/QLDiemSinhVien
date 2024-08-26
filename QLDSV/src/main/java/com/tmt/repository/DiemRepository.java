@@ -3,8 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 
-
-
 package com.tmt.repository;
 
 import com.tmt.pojo.Diem;

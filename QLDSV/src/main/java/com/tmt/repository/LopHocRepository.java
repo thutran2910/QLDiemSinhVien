@@ -10,11 +10,20 @@ import com.tmt.pojo.SinhVien;
 import java.util.List;
 
 public interface LopHocRepository {
+
     LopHoc findById(int id);
+
     List<LopHoc> findAll();
-    List<SinhVien> getStudentsByLopHocId(int lopHocId);
-    List<LopHoc> getNameLopHoc();  
+
+    List<SinhVien> getStudentsByLopHocId(int lopHocId, int page, int pageSize);
+
+    List<LopHoc> getNameLopHoc();
+
     void save(LopHoc lopHoc);
+
     void update(LopHoc lopHoc);
+
     void deleteById(int id);
+
+    int countStudentsByLopHocId(int lopHocId);
 }

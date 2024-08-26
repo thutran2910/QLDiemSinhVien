@@ -15,7 +15,7 @@ public interface LopHocService {
 
     List<LopHoc> findAll();
 
-    List<SinhVien> getStudentsByLopHocId(int lopHocId);
+    List<SinhVien> getStudentsByLopHocId(int lopHocId, int page, int pageSize);
 
     List<LopHoc> getNameLopHoc();
 
@@ -24,4 +24,6 @@ public interface LopHocService {
     void update(LopHoc lopHoc);
 
     void deleteById(int id);
+
+    int countStudentsByLopHocId(int lopHocId);
 }
