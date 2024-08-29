@@ -11,8 +11,8 @@ import java.util.Collections;
 
 @Entity
 @Table(name = "nguoidung")
-@NamedQuery(name = "NguoiDung.findByUsername",
-        query = "SELECT u FROM NguoiDung u WHERE u.username = :username")
+//@NamedQuery(name = "NguoiDung.findByUsername",
+//        query = "SELECT u FROM NguoiDung u WHERE u.username = :username")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class NguoiDung implements UserDetails, Serializable {
 
@@ -20,10 +20,10 @@ public class NguoiDung implements UserDetails, Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "username", nullable = false, unique = true)
     private String username;
 
-    @Column(nullable = false)
+    @Column(name = "password", nullable = false)
     private String password;
 
     @Column(name = "userRole", nullable = false)
